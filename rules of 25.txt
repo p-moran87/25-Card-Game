@@ -1,0 +1,86 @@
+Introduction
+Twenty-Five could be considered the national card game of Ireland: it is played widely in rural pubs and at home. The game moves quite quickly - it does not take long to play a hand - and although there is a fair amount of luck in it, there is also some scope for skill. It is normally played by about five people but can be played by as few as two or as many as ten. The ranking order of the cards may seem a little arcane at first, but with a little practice it becomes second nature.
+
+As well as the basic game, there are more complicated bidding versions called 55, 110 or 220 depending on the final score to be atained.
+
+Twenty-Five
+This is the basic form of the modern Irish game, without bidding. Apart from the scoring it is more or less the same as the old games of Maw and Spoil Five.
+
+Players
+The game is normally played by from 3 to 9 people; two-player and ten-player games are possible, but the two-player game is not very interesting and ten players might prefer to split into two five-player games. Any number can play as individuals; 4, 6 or 8 (or 10) can play in pairs, partners sitting opposite each other; the nine-player game can be played between three teams of three, each player sitting between members of the two other teams; it would also be possible for 6 players to play 3 against 3, but I'm not sure whether this is customary.
+
+Object of the Game
+To be the first player or team to twenty five points, scoring five points per trick. This will usually take two or more deals. Pairs (or threes) combine the scores for the tricks they win.
+
+Ranking Order of the Cards
+25 is played with a standard 52-card pack. In each deal, one suit will be chosen as trumps. the rank of cards is different depending on the colour of the suit and whether it is trumps. From high to low, the cards rank as follows:
+
+Trump suit:
+Hearts: heart5, heartJ, heartA, heartK, heartQ, heart10, heart9, heart8, heart7, heart6, heart4, heart3, heart2
+Diamonds: diamond5, diamondJ, heartA, diamondA, diamondK, diamondQ, diamond10, diamond9, diamond8, diamond7, diamond6, diamond4, diamond3, diamond2
+Clubs: club5, clubJ, heartA, clubA, clubK, clubQ, club2, club3, club4, club6, club7, club8, club9, club10
+Spades: spade5, spadeJ, heartA, spadeA, spadeK, spadeQ, spade2, spade3, spade4, spade6, spade7, spade8, spade9, spade10
+Non-trump suit:
+Hearts: heartK, heartQ, heartJ, heart10, heart9, heart8, heart7, heart6, heart5, heart4, heart3, heart2
+Diamonds: diamondK, diamondQ, diamondJ, diamond10, diamond9, diamond8, diamond7, diamond6, diamond5, diamond4, diamond3, diamond2, diamondA
+Clubs: clubK, clubQ, clubJ, clubA, club2, club3, club4, club5, club6, club7, club8, club9, club10
+Spades: spadeK, spadeQ, spadeJ, spadeA, spade2, spade3, spade4, spade5, spade6, spade7, spade8, spade9, spade10
+To summarise:
+
+The highest trump is always the five of the trump suit.
+The second highest trump is always the jack of the trump suit.
+The third highest trump is always the ace of hearts, no matter what the trump suit is.
+If the trump suit is not hearts, the fourth highest trump is the ace.
+After the ace of trumps follow the King, Queen and numeral cards.
+In a suit that is not trumps, the highest card is the King, followed by the Queen, Jack and numeral cards.
+Among the numeral cards, the highest cards are best in the red suits, but the lowest cards are best in the black suits: players remember this as "highest in red, lowest in black".
+The ace of hearts is always a trump. The other aces, when their suit is not trumps, count as ordinary ones. Therefore the ace of diamonds is the lowest card of its suit when diamonds are not trumps. The black aces, when not trumps, rank between the jack and the two.
+Deal and Robbing
+The dealer shuffles and offers the cards to the player on the right to cut if he or she wishes to. The dealer then deals five cards to each person, two at a time followed by three at a time or three at a time followed by two at a time. The turn to deal passes to the left after each hand.
+
+After dealing, the dealer stacks the undealt cards face down and turns the top card of this stack face up. The suit of this turned card is trumps for the hand. If you hold the ace of trumps you may "rob" the trump turned up by the dealer. To rob the trump, you place any unwanted card from your hand face down beside the undealt part of the deck and either take the turned up trump into your hand or leave it where it is to play as though it were one of the cards in your hand. If the dealer turns up the ace, the dealer can rob it. If the ace of trumps is not dealt, no one can rob the turned trump. If you are entitled to rob the trump, it must be done before you play a card to the first trick, otherwise you lose the right to rob it.
+
+It is not obligatory for the holder of the ace of trumps to rob. If you have the trump ace and decide not to rob (or forget to do so) then you lose your opportunity to rob after you have played to the first trick. You must then play with the five cards you were originally dealt. Your concealed ace of trumps keeps its normal power, ranking above the king.
+
+Play
+The player to dealer's left leads to the first trick. The highest card of the suit led wins unless a trump is played, in which case the highest trump wins. The winner of each trick leads to the next.
+
+When a card of a non-trump suit is led, players who have cards of this suit must either play a card of the suit that was led or play a trump (which is known as ruffing). In this game you are always allowed to trump even if you could have followed suit. If you don't wish to ruff, you must follow suit if you can. However, if you are unable to follow suit you do not have to trump - in this case you may play any card - either a trump or a card of another non-trump suit.
+
+When a trump is led, the other players must play trumps if possible, with the exception of the top three trumps (the 5, J and heartA), which have the privilege of reneging: you can never be forced to play any of these three top trumps unless another player leads a better trump than the one you hold. A player who holds no trumps (except possibly one or more of the top three when a lower trump was led) may play any card.
+
+Note that for the purposes of following suit, the ace of hearts counts as a trump, not as a heart.
+
+Examples:
+
+Spades are trumps. You hold spade5, heartA and no other trumps. The spade7 is led. Your trumps are both from the top three better than the lead, so you do not have to play either of them - you may play any card.
+Spades are trumps. You hold spade5, spadeA and no other trumps. The spade7 is led. The spadeA does not have the privilege of reneging, so you must play either this or your other trump, the spade5. Yoiu cannot throw a card of another suit on this trick.
+Spades are trumps. You hold heartA and no other trumps. The spadeJ is led. Since the trumps that was led is better than yours, you are forced to play your heartA.
+Spades are trumps. You hold heartA and no other trumps. The spade7 is led and the next player plays the spade5. You are the third player. Although the trick contains a card that is higher than yours, that hightrump was not led to the trick (the lead was a low trump - the 7) so you need not play your heartA. You are free to play any card to this trick.
+Scoring
+Each trick is worth five points to the team or player that wins it. As soon as a player reaches 25 points (i.e. has won five tricks) the game is over and that player or team is the winner. If no one has reached 25 at the end of the hand, the next dealer shuffles, the cards are cut, and a new hand is dealt and played.
+
+Note that the game very often ends in the middle before all the cards are played. As soon as a player or team wins its fifth trick, reaching 25 points, play stops and the winners are paid. If another game is to be played the cards are shuffled and there is a new deal.
+
+Usually the game is played for a small stake, for example 20p. Some people pay for each game, but when the game is played between two teams, some play (for example) best of five games, in which case the first first team to three games wins the stake.
+
+It is often agreed that if one player or team wins in one hand by winning all five tricks (for 25 points), that entitles them to a double stake (40p if the basic stake per game was 20p). The five tricks do not necessarily have to be won in the first hand, but in order to claim the double stake, the player or team must have no previous score in that game.
+
+Example of Play
+Three players A, B, and C. A is the dealer and deals three cards to each player, and then two cards to each player. He then turns up the two of spades - thus spades are trumps.
+
+The three hands
+A: spade3, diamondJ, club2, club10, clubJ.
+B: spadeA, spadeQ, diamond2, diamondQ, heart6.
+C: spade5, diamond8, diamondK, club5, heart10.
+Play
+Trick 1: B places his diamond2 face down indicating that he is robbing the two of spades and plays the diamondQ, C plays the diamondK and A plays the spade3, happy to have won a trick with his little trump. A wins the first trick.
+A leads back the club2. B plays his queen of spades (trump) and C not wanting to overruff with the spade5 (a very high trump) plays his club5. B wins the second trick.
+B now plays the ace of trumps. To this C reneges his spade5 (his privilege) and plays the diamond8 of diamonds (now the worst card in his hand) instead. A plays a lowly club10. B wins the third trick.
+B then leads his other trump (from the top of the deck) the two of spades. C (with a smile) plays the five, and A plays the clubJ. C wins the fourth trick.
+C then leads the heart10, winning against A's Jack of Diamonds and B's heart6.
+Score:
+A: 1 trick therefore 5 points
+B: 2 tricks therefore 10 points
+C: 2 tricks therefore 10 points
+The cards are combined, shuffled and dealt again.
