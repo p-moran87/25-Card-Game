@@ -47,7 +47,7 @@ class CardGame(object):
 		self._deck = Deck()
 		self._deck.shuffle()
 		
-		#Pass the player and the computer 3 cards each, follwed by 2 cards each
+		# Pass the player and the computer 3 cards each, follwed by 2 cards each
 		# First deal of 3 cards each
 		player_deal1 = [self._deck.deal(), self._deck.deal(), self._deck.deal()]
 		computer_deal1 = [self._deck.deal(), self._deck.deal(), self._deck.deal()]
@@ -81,218 +81,222 @@ class CardGame(object):
 		return self._computer.getCards()
 
 	def getTrumpCards(self):
-		"""Returns a list of the trump card."""
+		"""Returns a the trump card."""
 		return self._trumps.getCards()
 
-	def RobCard(self):
+	def RobCard(self,num_dealt_cards):
 		""" checks to see who has the rob"""
 		if (self._trumps._cards[0].rank == 1):
-			return "Turned an Ace - you can rob!"
+			if num_dealt_cards == 5:
+				return "Turned an Ace - you can rob!"
+			else:
+				return "Computer turned Ace - it can rob!"
+
 		for i in range(0,5):
 			if self._player._cards[i].rank == 1  and self._trumps._cards[0].suit == self._player._cards[i].suit:
 				return "Congrats, you have the rob!"
 			elif self._computer._cards[i].rank == 1 and self._trumps._cards[0].suit == self._computer._cards[i].suit:
 				return "The computer has the rob!"
 
-	def getPoints(self):
-		"""Returns the points scored by player"""
+	def getDealer(self,num_dealt_cars):
+		if num_dealt_cars == 5:
+			dealer = "player"
+		else:
+			dealer = "computer"
+		return dealer
+
+	def getPoints(self,i):
+		"""Returns the points scored by player for new round"""
 		player_count = 0
 		computer_count = 0
 
-		#for card in self._cards:
-		for i in range(0,5):
-			if self._trumps._cards[0].suit == "Spades":
-				if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
-					if val_list_trump_spades.index(self._player._cards[i].rank) > val_list_trump_spades.index(self._computer._cards[i].rank):
-						player_count += 5
-					else:
-						computer_count += 5
+		if self._trumps._cards[0].suit == "Spades":
+			if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
+				if val_list_trump_spades.index(self._player._cards[i].rank) > val_list_trump_spades.index(self._computer._cards[i].rank):
+					player_count += 5
+				else:
+					computer_count += 5
 
-				elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
-					if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
-						computer_count += 5
-					else:
-						player_count += 5
-				elif self._player._cards[i].suit != "Spades" and self._computer._cards[i].suit == "Spades":
-					if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
-						player_count += 5
-					else:
-						computer_count += 5
+			elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
+				if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
+					computer_count += 5
+				else:
+					player_count += 5
+			elif self._player._cards[i].suit != "Spades" and self._computer._cards[i].suit == "Spades":
+				if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
+					player_count += 5
+				else:
+					computer_count += 5
 
-				elif self._player._cards[i].suit != "Spades" and self._computer._cards[i].suit != "Spades":
-					if self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
-						if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
-						player_count += 5
-
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
-						if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
-							player_count += 5
-						elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
-							computer_count += 5
-						else:
-							if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
-								player_count += 5
-							else:
-								computer_count += 5
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
-						player_count += 5
-
-					elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
-						if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
-						player_count += 5
-
-			elif self._trumps._cards[0].suit == "Clubs":
+			elif self._player._cards[i].suit != "Spades" and self._computer._cards[i].suit != "Spades":
 				if self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
-					if val_list_trump_clubs.index(self._player._cards[i].rank) > val_list_trump_clubs.index(self._computer._cards[i].rank):
+					if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+				elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
+					if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
+						player_count += 5
+					elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
+						computer_count += 5
+					else:
+						if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
+							player_count += 5
+						else:
+							computer_count += 5
+				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
+					if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
+					player_count += 5
+
+		elif self._trumps._cards[0].suit == "Clubs":
+			if self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
+				if val_list_trump_clubs.index(self._player._cards[i].rank) > val_list_trump_clubs.index(self._computer._cards[i].rank):
+					player_count += 5
+				else:
+					computer_count += 5
+
+			elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
+				if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
+					computer_count += 5
+				else:
+					player_count += 5
+			elif self._player._cards[i].suit != "Clubs" and self._computer._cards[i].suit == "Clubs":
+				if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
+					player_count += 5
+				else:
+					computer_count += 5
+
+			elif self._player._cards[i].suit != "Clubs" and self._computer._cards[i].suit != "Clubs":
+				if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
+					if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+				elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
+					if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
+						player_count += 5
+					elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
+						computer_count += 5
+					else:
+						if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
+							player_count += 5
+						else:
+							computer_count += 5
+				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
+					if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
+					player_count += 5
+
+		elif self._trumps._cards[0].suit == "Hearts":
+			if self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
+				if val_list_trump_hearts.index(self._player._cards[i].rank) > val_list_trump_hearts.index(self._computer._cards[i].rank):
+					player_count += 5
+				else:
+					computer_count += 5
+			elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
+				player_count += 5
+
+			elif self._player._cards[i].suit != "Hearts" and self._computer._cards[i].suit == "Hearts":
+				computer_count += 5
+
+			elif self._player._cards[i].suit != "Hearts" and self._computer._cards[i].suit != "Hearts":
+				if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
+					if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+				elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
+					player_count += 5
+
+				if self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
+					if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
 						player_count += 5
 					else:
 						computer_count += 5
 
 				elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
-					if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
-						computer_count += 5
-					else:
-						player_count += 5
-				elif self._player._cards[i].suit != "Clubs" and self._computer._cards[i].suit == "Clubs":
-					if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
+					player_count += 5
+
+				if self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
+					if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
 						player_count += 5
 					else:
 						computer_count += 5
+				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
+					player_count += 5
 
-				elif self._player._cards[i].suit != "Clubs" and self._computer._cards[i].suit != "Clubs":
-					if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
-						if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
-						player_count += 5
+		elif self._trumps._cards[0].suit == "Diamonds":
+			if self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
+				if val_list_trump_diamonds.index(self._player._cards[i].rank) > val_list_trump_diamonds.index(self._computer._cards[i].rank):
+					player_count += 5
+				else:
+					computer_count += 5
 
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
-						if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
-							player_count += 5
-						elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
-							computer_count += 5
-						else:
-							if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
-								player_count += 5
-							else:
-								computer_count += 5
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
-						player_count += 5
+			elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
+				if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
+					computer_count += 5
+				else:
+					player_count += 5
+			elif self._player._cards[i].suit != "Diamonds" and self._computer._cards[i].suit == "Diamonds":
+				if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
+					player_count += 5
+				else:
+					computer_count += 5
 
-					elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
-						if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
-						player_count += 5
-
-			elif self._trumps._cards[0].suit == "Hearts":
-				if self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
-					if val_list_trump_hearts.index(self._player._cards[i].rank) > val_list_trump_hearts.index(self._computer._cards[i].rank):
+			elif self._player._cards[i].suit != "Diamonds" and self._computer._cards[i].suit != "Diamonds":
+				if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
+					if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
 						player_count += 5
 					else:
 						computer_count += 5
+
+				elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
+					if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
+						player_count += 5
+					else:
+						computer_count += 5
+
+				elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
+					player_count += 5
+
+				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
+					if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
+						player_count += 5
+					elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
+						computer_count += 5
+					else:
+						if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
+							player_count += 5
+						else:
+							computer_count += 5
 				elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
 					player_count += 5
 
-				elif self._player._cards[i].suit != "Hearts" and self._computer._cards[i].suit == "Hearts":
-					computer_count += 5
+		return player_count, computer_count
 
-				elif self._player._cards[i].suit != "Hearts" and self._computer._cards[i].suit != "Hearts":
-					if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
-						if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
-						player_count += 5
-
-					if self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
-						if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-
-					elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
-						player_count += 5
-
-					if self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
-						if val_list_diamonds.index(self._player._cards[i].rank) > val_list_diamonds.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-					elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
-						player_count += 5
-
-			elif self._trumps._cards[0].suit == "Diamonds":
-				if self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit == "Diamonds":
-					if val_list_trump_diamonds.index(self._player._cards[i].rank) > val_list_trump_diamonds.index(self._computer._cards[i].rank):
-						player_count += 5
-					else:
-						computer_count += 5
-
-				elif self._player._cards[i].suit == "Diamonds" and self._computer._cards[i].suit != "Diamonds":
-					if (self._player._cards[i].rank != 5 or self._player._cards[i].rank != 11) and (self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1):
-						computer_count += 5
-					else:
-						player_count += 5
-				elif self._player._cards[i].suit != "Diamonds" and self._computer._cards[i].suit == "Diamonds":
-					if (self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1) and (self._computer._cards[i].rank != 5 or self._computer._cards[i].rank != 11):
-						player_count += 5
-					else:
-						computer_count += 5
-
-				elif self._player._cards[i].suit != "Diamonds" and self._computer._cards[i].suit != "Diamonds":
-					if self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit == "Spades":
-						if val_list_spades.index(self._player._cards[i].rank) > val_list_spades.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-
-					elif self._player._cards[i].suit == "Spades" and self._computer._cards[i].suit != "Spades":
-						player_count += 5
-
-					elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit == "Clubs":
-						if val_list_clubs.index(self._player._cards[i].rank) > val_list_clubs.index(self._computer._cards[i].rank):
-							player_count += 5
-						else:
-							computer_count += 5
-
-					elif self._player._cards[i].suit == "Clubs" and self._computer._cards[i].suit != "Clubs":
-						player_count += 5
-
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit == "Hearts":
-						if self._player._cards[i].suit == "Hearts" and self._player._cards[i].rank == 1:
-							player_count += 5
-						elif self._computer._cards[i].suit == "Hearts" and self._computer._cards[i].rank == 1:
-							computer_count += 5
-						else:
-							if val_list_hearts.index(self._player._cards[i].rank) > val_list_hearts.index(self._computer._cards[i].rank):
-								player_count += 5
-							else:
-								computer_count += 5
-					elif self._player._cards[i].suit == "Hearts" and self._computer._cards[i].suit != "Hearts":
-						player_count += 5
-
-		# crude card comparison
-		if player_count > computer_count:
-			result = "Congratulations! You win!"
-		else:
-			result = "Hard luck. Computer Wins"
-		return player_count, computer_count, result
-
-	""" Defines the rules and rankings of cards """
+""" Defines the rules and rankings of cards """
 Rank_Trump_Spades = {1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 4, 7: 3, 8: 2, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
 Rank_Trump_Clubs = {1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 4, 7: 3, 8: 2, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
 Rank_Trump_Hearts = {1: 2, 2: 3, 3: 4, 4: 6, 5: 7, 6: 8, 7: 9, 8: 10, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
