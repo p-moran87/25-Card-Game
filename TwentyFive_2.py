@@ -26,16 +26,12 @@ class Computer(Player):
 	def __init__(self, cards):
 		""" Conceal the computer's hand of cards"""
 		Player.__init__(self, cards)
-		self._showOneCard = True
+
+		for card in self._cards:
+			card.turn()
+
 		#for card in self._cards:
 		#	card.turn()
-		
-	def __str__(self):
-		"""Return just one card if not hit yet."""
-		if self._showOneCard:
-			return str(self._cards[0])
-		else:
-			return Player.__str__(self)
 
 class Trumps(Player):
 	def __init__(self, cards):
@@ -90,7 +86,7 @@ class CardGame(object):
 			else:
 				return "Computer turned Ace - it can rob!"
 
-		for i in range(0,5):
+		for i in range(5):
 			if self._player._cards[i].rank == 1  and self._trumps._cards[0].suit == self._player._cards[i].suit:
 				return "Congrats, you have the rob!"
 			elif self._computer._cards[i].rank == 1 and self._trumps._cards[0].suit == self._computer._cards[i].suit:
