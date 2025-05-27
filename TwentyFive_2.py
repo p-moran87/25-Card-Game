@@ -10,14 +10,6 @@ class Player(object):
 	"""This class represents a player in the 25 game."""	
 	def __init__(self, cards):
 		self._cards = cards
-		for card in self._cards:
-			card.turn()
-
-	def __str__(self):
-		"""Returns string rep of cards and points."""
-		result = ", ".join(map(str, self._cards))
-		result += "\n  " + str(self.getPoints()) + " points"
-		return result
 		
 	def getCards(self):
 		return self._cards
@@ -26,9 +18,6 @@ class Computer(Player):
 	def __init__(self, cards):
 		""" Conceal the computer's hand of cards"""
 		Player.__init__(self, cards)
-
-		for card in self._cards:
-			card.turn()
 
 		#for card in self._cards:
 		#	card.turn()
