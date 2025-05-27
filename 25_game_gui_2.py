@@ -72,43 +72,58 @@ class TwentyFiveGUI(Frame):
 
 		self._newGame()
 
-		
-	#def turn(self):
-	#	"""Resets the card's faceup attribute."""
-	#	self._faceup = not self._faceup	
+	def _play_card(self, card_index):
+		global p1_card
+		global comp_card
+		global playerScore
+		global computerScore
 
-	def play_card(self, card_index):
-		pcard = self._model.getPlayerCards()[card_index]		
+		# Get the cards
+		p1_card = self._model.getPlayerCards()[card_index]
+		comp_card = self._model.getComputerCards()[card_index]
 
-		#ccards = self._model.getComputerCards()
+		print(f"Player selected card: {p1_card}")
 
-		print(f"Player selected card: {pcard}")
-
-		# TODO: Add your game logic to validate and process this card play
-		# Example:
-		# if self._model.isValidPlay(card):
-		#     self._model.playCard(card)
-		#     self.update_board()
-		#     self._playerButtons[card_index]['state'] = DISABLED
-		#self._model.playCard(card)
-
+		# Disable the player's button
 		self._playerButtons[card_index]['state'] = DISABLED
-		self._playerLabels[card_index].grid(row = 20, column = card_index)
-		self._computerLabels[card_index].grid(row = 3, column = card_index)
+		self._playerLabels[card_index].grid(row=20, column=card_index)
+		self._computerLabels[card_index].grid(row=3, column=card_index)
 
+		# Get points
+		p_points, c_points = self._model.getPoints(p1_card, comp_card)
+		playerScore += p_points
+		computerScore += c_points
 
+		# Update GUI scores
+		self._playerScore.set(playerScore)
+		self._computerScore.set(computerScore)
+
+		# Check for win condition
+		if playerScore >= 25:
+			self._statusVar3.set("Congratulations! You win!")
+			self._disable_remaining_buttons()
+		elif computerScore >= 25:
+			self._statusVar3.set("Hard luck. Computer Wins.")
+			self._disable_remaining_buttons()
+		else:
+			self._statusVar3.set("Select another card.")
+
+	def _disable_remaining_buttons(self):
+		for btn in self._playerButtons:
+			btn['state'] = DISABLED
+		
 	def _refresh_cards(self):
 		"""Instantiates the model and establishes the GUI"""
+		global num_dealt_cards
+
 		self._model = CardGame()
 
 		# Refresh the card panes
 		# Player Cards
-		
 		self._playerImages = list(map(lambda card: PhotoImage(file=card.getFilename()), self._model.getPlayerCards()))
-		# playing zone showing cards played
 		self._playerLabels = list(map(lambda i: Label(self._playerPane, image = i), self._playerImages))
 
-		self._playerButtons = []
+		#self._playerButtons = []
 		player_cards = self._model.getPlayerCards()
 
 		# Computer Cards
@@ -116,11 +131,11 @@ class TwentyFiveGUI(Frame):
 		self._computerImages = list(map(lambda card: PhotoImage(file = card.getFilename()), self._model.getComputerCards()))
 
 		# player's cards to click on
-		for i in range(5):
-			btn = Button(self,image=self._playerImages[i],state=ACTIVE,command=lambda idx=i: self.play_card(idx))
-			btn.grid(row=30, column=i, columnspan=1)
-			self._playerButtons.append(btn)
-			self._computerLabels = list(map(lambda i: Label(self._computerPane, image = i), self._computerImages))
+		#for i in range(5):
+		#	btn = Button(self,image=self._playerImages[i],state=ACTIVE,command=lambda idx=i: self._play_card(idx))
+		#	btn.grid(row=30, column=i, columnspan=1)
+		#	self._playerButtons.append(btn)
+		#	self._computerLabels = list(map(lambda i: Label(self._computerPane, image = i), self._computerImages))
 
 		# Absolute image path
 		photo = PhotoImage(file = "DECK/b.gif")
@@ -147,59 +162,42 @@ class TwentyFiveGUI(Frame):
 
 	# Create the event handler methods
 	def _newGame(self):
-
 		global playerScore
 		global computerScore
 		global num_dealt_cards
+
 		playerScore = 0
 		computerScore = 0
 		num_dealt_cards = 5
-		
-		self._refresh_cards()
 
-		for i in range(5):
-			playerScore += self._model.getPoints(i)[0]
-			computerScore += self._model.getPoints(i)[1]
-			
-		# crude card comparison
-		if playerScore ==25:
-			result = "Congratulations! You win!"
-		elif computerScore ==25:
-			result = "Hard luck. Computer Wins."
-		else:
-			result = "Deal again!"
+		self._refresh_cards()
+		self._setup_card_buttons()
 
 		self._playerScore.set(playerScore)
 		self._computerScore.set(computerScore)
-		self._statusVar3.set(result)
+		self._statusVar3.set("Please select a card to play.")
 
 	def _dealAgain(self):
-
-		global playerScore
-		global computerScore
 		global num_dealt_cards
-		num_dealt_cards = num_dealt_cards + 5
 
+		if playerScore >= 25 or computerScore >= 25:
+			self._statusVar3.set("Game is over. Start a new game.")
+			return
+
+		num_dealt_cards += 5
 		self._refresh_cards()
+		self._setup_card_buttons()
+		self._statusVar3.set("New round! Please select a card to play.")
 
-		roundRob = self._model.RobCard(num_dealt_cards)
-		roundTrumps = self._model.TrumpsAre()
+	def _setup_card_buttons(self):
+		self._playerButtons = []
 
 		for i in range(5):
-			while True:
-				if playerScore < 25 and computerScore < 25:
-					playerScore += self._model.getPoints(i)[0]
-					computerScore += self._model.getPoints(i)[1]
-				else:
-					break
-		if playerScore ==25:
-			result = "Congratulations! You win!"
-		else:
-			result = "Hard luck. Computer Wins."			
+			btn = Button(self, image=self._playerImages[i], state=ACTIVE, command=lambda idx=i: self._play_card(idx))
+			btn.grid(row=30, column=i, columnspan=1)
+			self._playerButtons.append(btn)
 
-		self._playerScore.set(playerScore)
-		self._computerScore.set(computerScore)
-		self._statusVar3.set(result)
+		self._computerLabels = list(map(lambda i: Label(self._computerPane, image=i), self._computerImages))
 		
 def main():
 	TwentyFiveGUI().mainloop()
