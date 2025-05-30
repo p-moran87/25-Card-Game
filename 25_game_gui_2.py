@@ -20,6 +20,8 @@ class TwentyFiveGUI(Frame):
 		self.master.configure(bg='darkgreen')
 		self.master.geometry("800x600")
 		self.grid()
+
+		self._dealer = "player"  # or "computer"
 		
 		self._newGameButton = Button(self, text = "New Game", command = self._newGame)
 		self._newGameButton.grid(row = 0, column = 7)
@@ -39,7 +41,7 @@ class TwentyFiveGUI(Frame):
 		self._hiddenPane.grid(row = 0, column = 0, columnspan = 5)
 
 		self._computerPane = Frame(self)
-		self._computerPane.grid(row = 3, column = 0, columnspan = 5)
+		self._computerPane.grid(row = 1, column = 0, columnspan = 5)
 
 		self._playerPane = Frame(self)
 		self._playerPane.grid(row = 15, column=0, columnspan=5)
@@ -70,7 +72,124 @@ class TwentyFiveGUI(Frame):
 		self._gameResult = Entry(self, width = 30, textvariable = self._statusVar3)
 		self._gameResult.grid(row = 35, column = 0, columnspan = 5)
 
+		self._computer_played_indices = []
+
 		self._newGame()
+
+		#Rank_Trump_Spades = {1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 4, 7: 3, 8: 2, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
+		#Rank_Trump_Clubs = {1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 4, 7: 3, 8: 2, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
+		#Rank_Trump_Hearts = {1: 2, 2: 3, 3: 4, 4: 6, 5: 7, 6: 8, 7: 9, 8: 10, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
+		#Rank_Trump_Diamonds = {1: 2, 2: 3, 3: 4, 4: 6, 5: 7, 6: 8, 7: 9, 8: 10, 9: 12, 10: 13, 11: 1, 12: 11, 13: 5}
+
+		self.trump_rankings = {
+			'Spades': {
+				5: 13,		# Highest
+				11: 12,		# Jack
+				('Hearts', 1): 11,		# Ace of Hearts
+				1: 10,		# Ace of Spades (normal)
+				13: 9, 12: 8, 2: 7, 3: 6, 4: 5, 6: 4, 7: 3, 8: 2, 9: 1, 10: 0
+			},
+			'Clubs': {
+				5: 13, 11: 12,('Hearts', 1): 11, 1: 10,
+				13: 9, 12: 8, 2: 7, 3: 6, 4: 5, 6: 4, 7: 3, 8: 2, 9: 1, 10: 0
+			},
+			'Hearts': {
+				5: 13, 11: 12,
+				1: 11,	# Ace of Hearts is already in suit
+				13: 10, 12: 9, 10: 8, 9: 7, 8: 6, 7: 5, 6: 4, 4: 3, 3: 2, 2: 1
+			},
+			'Diamonds': {
+				5: 13, 11: 12,('Hearts', 1): 11, 1: 10,
+				13: 8, 12: 8, 10: 7, 9: 6, 8: 5, 7: 4, 6: 3, 4: 2, 3: 1, 2: 0
+			}
+		}
+
+		self.suit_rankings = {
+			"Spades": {13: 13, 12: 12, 11: 11, 1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 5, 7: 4, 8: 3, 9: 2, 10: 1},
+			"Clubs": {13: 13, 12: 12, 11: 11, 1: 10, 2: 9, 3: 8, 4: 7, 5: 6, 6: 5, 7: 4, 8: 3, 9: 2, 10: 1},
+
+			"Hearts": {1: 13, 13: 12, 12: 11, 10: 10, 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2},
+			"Diamonds": {13: 13, 12: 12, 11: 11, 10: 10, 9: 9, 8: 8, 7: 7, 6: 6, 5: 5, 4: 4, 3: 3, 2: 2, 1: 1}
+			}
+
+	def _get_card_strength(self, card, trump_suit):
+		if card is None:
+			return -1  # or some sentinel value lower than any real card's strength
+
+		# Special case: Ace of Hearts is ALWAYS the 3rd highest trump
+		if card.suit == "Hearts" and card.rank == 1:
+			# Temporarily treat it as a trump card for strength
+			return self.trump_rankings[trump_suit].get(('Hearts', 1), 0)
+
+		# Normal trump card
+		if card.suit == trump_suit:
+			return self.trump_rankings[trump_suit].get((card.suit, card.rank), 0)
+
+		# Non-trump card
+		return self.suit_rankings.get(card.suit, {}).get(card.rank, 0)
+
+	def _choose_computer_card(self, lead_card, trump_suit, computer_hand):
+		computer_hand = [card for i, card in enumerate(computer_hand) if i not in self._computer_played_indices]
+		
+		if lead_card is None:
+			# Computer is leading: play strongest trump if available, otherwise strongest card
+			trump_cards = [card for card in computer_hand if card.suit == trump_suit]
+			if trump_cards:
+				return max(trump_cards, key=lambda c: self._get_card_strength(c, trump_suit))
+			return max(computer_hand, key=lambda c: self._get_card_strength(c, trump_suit))
+
+		lead_is_trump = (lead_card.suit == trump_suit)
+		lead_strength = self._get_card_strength(lead_card, trump_suit)
+
+		if lead_is_trump:
+			# Player led with a trump
+			computer_trumps = [card for card in computer_hand if card.suit == trump_suit]
+			if computer_trumps:
+				beating_trumps = [card for card in computer_trumps
+									if self._get_card_strength(card, trump_suit) > lead_strength]
+				if beating_trumps:
+					return min(beating_trumps, key=lambda c: self._get_card_strength(c, trump_suit))
+				return min(computer_trumps, key=lambda c: self._get_card_strength(c, trump_suit))
+			return min(computer_hand, key=lambda c: self._get_card_strength(c, trump_suit))
+
+		else:
+			# Player led with a non-trump
+			computer_trumps = [card for card in computer_hand if card.suit == trump_suit]
+			if computer_trumps:
+				return min(computer_trumps, key=lambda c: self._get_card_strength(c, trump_suit))
+
+			same_suit_cards = [card for card in computer_hand if card.suit == lead_card.suit]
+			beating_same_suit = [card for card in same_suit_cards
+						if self._get_card_strength(card, trump_suit) > lead_strength]
+			if beating_same_suit:
+				return min(beating_same_suit, key=lambda c: self._get_card_strength(c, trump_suit))
+
+			return min(computer_hand, key=lambda c: self._get_card_strength(c, trump_suit))
+	
+	def _computer_leads(self):
+		# Computer leads the trick
+		trump_suit = self._model.getTrumpCards()[0].suit
+		computer_hand = self._model.getComputerCards()
+
+		comp_card = self._choose_computer_card(lead_card=None, trump_suit=trump_suit, computer_hand=computer_hand)
+		self.comp_card = comp_card  # store for later comparison
+
+		# Find the index of the card to remove/disable it later
+		full_computer_hand = self._model.getComputerCards()
+		comp_card_index = full_computer_hand.index(comp_card)
+		self._computer_played_indices.append(comp_card_index)
+
+		print("Computer hand:", computer_hand)
+		print("Computer played:", comp_card)
+		print("Index of played card:", comp_card_index)
+
+		# Remove the back card label (hides it visually)
+		self._backCardLabels[comp_card_index].grid_forget()
+
+		# Place the real card in the same grid cell (same row/column)
+		self._computerLabels[comp_card_index].grid(row=1, column=comp_card_index)
+
+		self._statusVar3.set("Computer has played. Your turn.")
 
 	def _play_card(self, card_index):
 		global p1_card
@@ -78,21 +197,43 @@ class TwentyFiveGUI(Frame):
 		global playerScore
 		global computerScore
 
-		# Get the cards
-		p1_card = self._model.getPlayerCards()[card_index]
-		comp_card = self._model.getComputerCards()[card_index]
+		player_hand = self._model.getPlayerCards()
+		computer_hand = self._model.getComputerCards()
+		trump_suit = self._model.getTrumpCards()[0].suit
 
-		print(f"Player selected card: {p1_card}")
+		if self.lead_player == "computer":
+			# Computer already led
+			comp_card = self.comp_card  # from earlier call to _computer_leads()
+			p1_card = player_hand[card_index]
+			led_by = "computer"
+
+		else:
+			# Player leads
+			p1_card = player_hand[card_index]
+			comp_card = self._choose_computer_card(lead_card=p1_card, trump_suit=trump_suit, computer_hand=computer_hand)
+			led_by = "player"
+
+			full_computer_hand = self._model.getComputerCards()
+			comp_index = full_computer_hand.index(comp_card)
+			self._computer_played_indices.append(comp_index)
+
+			self._backCardLabels[comp_index].grid_forget()
+			self._computerLabels[comp_index].grid(row=1, column=comp_index)
 
 		# Disable the player's button
 		self._playerButtons[card_index]['state'] = DISABLED
 		self._playerLabels[card_index].grid(row=20, column=card_index)
-		self._computerLabels[card_index].grid(row=3, column=card_index)
 
 		# Get points
-		p_points, c_points = self._model.getPoints(p1_card, comp_card)
+		p_points, c_points = self._model.getPoints(p1_card, comp_card, led_by=led_by)
 		playerScore += p_points
 		computerScore += c_points
+
+		# Decide who leads next
+		if p_points > c_points:
+			self.lead_player = "player"
+		elif c_points > p_points:
+			self.lead_player = "computer"
 
 		# Update GUI scores
 		self._playerScore.set(playerScore)
@@ -105,8 +246,13 @@ class TwentyFiveGUI(Frame):
 		elif computerScore >= 25:
 			self._statusVar3.set("Hard luck. Computer Wins.")
 			self._disable_remaining_buttons()
+		elif playerScore + computerScore < 25:
+			if self.lead_player == "computer":
+				self._computer_leads()
+			else:
+				self._statusVar3.set("Your turn to lead.")
 		else:
-			self._statusVar3.set("Select another card.")
+			self._statusVar3.set("Deal again!.")
 
 	def _disable_remaining_buttons(self):
 		for btn in self._playerButtons:
@@ -123,28 +269,23 @@ class TwentyFiveGUI(Frame):
 		self._playerImages = list(map(lambda card: PhotoImage(file=card.getFilename()), self._model.getPlayerCards()))
 		self._playerLabels = list(map(lambda i: Label(self._playerPane, image = i), self._playerImages))
 
-		#self._playerButtons = []
 		player_cards = self._model.getPlayerCards()
 
 		# Computer Cards
 		computer_cards = self._model.getComputerCards()
 		self._computerImages = list(map(lambda card: PhotoImage(file = card.getFilename()), self._model.getComputerCards()))
-
-		# player's cards to click on
-		#for i in range(5):
-		#	btn = Button(self,image=self._playerImages[i],state=ACTIVE,command=lambda idx=i: self._play_card(idx))
-		#	btn.grid(row=30, column=i, columnspan=1)
-		#	self._playerButtons.append(btn)
-		#	self._computerLabels = list(map(lambda i: Label(self._computerPane, image = i), self._computerImages))
+		self._computerLabels = list(map(lambda i: Label(self._computerPane, image = i), self._computerImages))
 
 		# Absolute image path
 		photo = PhotoImage(file = "DECK/b.gif")
-
+		self._backCardLabels = []
+		
 		# hidden Cards
 		for i in range(5):
-			panel = Label(self,image=photo)
-			panel.image = photo  # prevent garbage collection
-			panel.grid(row=0, column=i, columnspan=1)
+			panel = Label(self._hiddenPane, image=photo)
+			panel.image = photo
+			panel.grid(row=0, column=i)
+			self._backCardLabels.append(panel)
 
 		#Trump Card	
 		self._trumpsImages = list(map(lambda card: PhotoImage(file = card.getFilename()), self._model.getTrumpCards()))
@@ -170,8 +311,12 @@ class TwentyFiveGUI(Frame):
 		computerScore = 0
 		num_dealt_cards = 5
 
+		self.lead_player = "player"
+
 		self._refresh_cards()
 		self._setup_card_buttons()
+
+		self._computer_played_indices = []
 
 		self._playerScore.set(playerScore)
 		self._computerScore.set(computerScore)
@@ -179,6 +324,8 @@ class TwentyFiveGUI(Frame):
 
 	def _dealAgain(self):
 		global num_dealt_cards
+
+		self._computer_played_indices = []
 
 		if playerScore >= 25 or computerScore >= 25:
 			self._statusVar3.set("Game is over. Start a new game.")
@@ -196,8 +343,6 @@ class TwentyFiveGUI(Frame):
 			btn = Button(self, image=self._playerImages[i], state=ACTIVE, command=lambda idx=i: self._play_card(idx))
 			btn.grid(row=30, column=i, columnspan=1)
 			self._playerButtons.append(btn)
-
-		self._computerLabels = list(map(lambda i: Label(self._computerPane, image=i), self._computerImages))
 		
 def main():
 	TwentyFiveGUI().mainloop()
