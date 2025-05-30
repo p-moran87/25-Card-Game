@@ -136,6 +136,13 @@ class CardGame(object):
 		led_card = p1_card if led_by == "player" else comp_card
 		response_card = comp_card if led_by == "player" else p1_card
 
+		# Special case: Ace of Hearts is ALWAYS the 3rd highest trump
+		if p1_card.suit == "Hearts" and p1_card.rank == 1:
+			if comp_card.suit == trump_suit and (comp_card.rank == 5 or comp_card.rank == 11):
+				return (0, 5)
+			else:
+				return (5, 0)
+
 	    # Case 1: Both play same suit
 		if p1_card.suit == comp_card.suit:
 			if get_card_value(p1_card) > get_card_value(comp_card):
